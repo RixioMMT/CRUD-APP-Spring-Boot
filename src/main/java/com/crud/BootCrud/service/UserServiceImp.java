@@ -1,34 +1,36 @@
 package com.crud.BootCrud.service;
 
+import com.crud.BootCrud.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.crud.BootCrud.repository.UserDao;
 import com.crud.BootCrud.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class UserServiceImp implements UserService{
     @Autowired
-    UserDao userDao;
+    UserRepository userRepository;
     @Override
     public List<User> printAllUsers() {
-        return userDao.findAll();
+        return userRepository.findAll();
     }
     @Override
     public void addUser(User user) {
-        userDao.save(user);
+        userRepository.save(user);
     }
     @Override
     public void deleteUser(Long id) {
-        userDao.delete(id);
+        userRepository.deleteById(id);
     }
     @Override
-    public User getUserById(Long id) {return userDao.find(id);}
-    @Override
-    public void editUser(User user) {
-        userDao.update(user);
+    public User getUserById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        return optionalUser.orElse(null);
     }
+    @Override
+    public void editUser(User user) { userRepository.save(user); }
 }

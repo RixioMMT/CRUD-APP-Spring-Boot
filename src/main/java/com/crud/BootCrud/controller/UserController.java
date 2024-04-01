@@ -23,7 +23,7 @@ public class UserController {
         return "add";
     }
     @PostMapping("/add")
-    public String addUser(User user) {
+    public String addUser(@ModelAttribute User user) {
         userService.addUser(user);
         return "redirect:/users";
     }
